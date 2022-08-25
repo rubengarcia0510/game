@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from pygame import mixer
 
 pygame.init()
 pantalla = pygame.display.set_mode((800, 600))
@@ -14,6 +15,13 @@ pygame.display.set_caption("Space Invaders")
 icono = pygame.image.load("2790378.png")
 icono = pygame.transform.scale(icono, (64, 64))
 pygame.display.set_icon(icono)
+
+mixer.music.load("MusicaFondo.mp3")
+mixer.music.set_volume(0.5)
+mixer.music.play(-1)
+
+sonido_misil = mixer.Sound("disparo.mp3")
+sonido_explosion = mixer.Sound("golpe.mp3")
 
 #icono_enemigo = pygame.image.load("enemigo.png")
 #icono_enemigo = pygame.transform.scale(icono_enemigo, (32, 32))
@@ -74,6 +82,7 @@ def enemigo(a, b, ene):
 def detectar_colision(xe, ye, xm, ym):
     distancia = math.sqrt((xe-xm)**2 + (ye-ym)**2)
     if distancia < 27:
+        sonido_explosion.play()
         return True
     else:
         return False
@@ -93,6 +102,7 @@ while se_ejecuta:
             if evento.key == pygame.K_LEFT:
                 delta = -0.3
             if evento.key == pygame.K_SPACE:
+                sonido_misil.play()
                 if misil_visible == False:
                     x_misil = x
                     misil(x_misil, y_misil)
