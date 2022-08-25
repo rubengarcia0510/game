@@ -10,6 +10,7 @@ se_ejecuta = True
 score = 0
 
 fuente = pygame.font.Font("joystix.ttf", 32)
+game_over_text = pygame.font.Font("joystix.ttf", 64)
 
 pygame.display.set_caption("Space Invaders")
 icono = pygame.image.load("2790378.png")
@@ -20,8 +21,8 @@ mixer.music.load("MusicaFondo.mp3")
 mixer.music.set_volume(0.5)
 mixer.music.play(-1)
 
-sonido_misil = mixer.Sound("disparo.mp3")
-sonido_explosion = mixer.Sound("golpe.mp3")
+sonido_misil = mixer.Sound("shoot.mp3")
+sonido_explosion = mixer.Sound("boom.mp3")
 
 #icono_enemigo = pygame.image.load("enemigo.png")
 #icono_enemigo = pygame.transform.scale(icono_enemigo, (32, 32))
@@ -59,6 +60,10 @@ y = 540
 delta = 0
 #delta_x_enemigo = 0.3
 #delta_y_enemigo = 50
+
+def game_over(x,y):
+    texto = fuente.render("GAME OVER",True,(255,25,255))
+    pantalla.blit(texto,(x,y))
 
 def show_score(x,y):
     texto = fuente.render(f"SCORE : {score}",True,(255,25,255))
@@ -120,6 +125,17 @@ while se_ejecuta:
 
     # modificar ubicacion enemigo
     for e in range(cantidad_enemigos):
+
+        if y_enemigo[e] > 500:
+            for k in range(cantidad_enemigos):
+                y_enemigo[k]=1000
+            game_over(60,200)
+            
+            mixer.music.stop()
+            mixer.music.load("game_over.mp3")
+            mixer.music.set_volume(0.5)
+            mixer.music.play()
+            break
 
         x_enemigo[e] += delta_x_enemigo[e]
 
