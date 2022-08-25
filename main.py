@@ -8,6 +8,8 @@ pantalla = pygame.display.set_mode((800, 600))
 se_ejecuta = True
 score = 0
 
+fuente = pygame.font.Font("joystix.ttf", 32)
+
 pygame.display.set_caption("Space Invaders")
 icono = pygame.image.load("2790378.png")
 icono = pygame.transform.scale(icono, (64, 64))
@@ -49,6 +51,10 @@ y = 540
 delta = 0
 #delta_x_enemigo = 0.3
 #delta_y_enemigo = 50
+
+def show_score(x,y):
+    texto = fuente.render(f"SCORE : {score}",True,(255,25,255))
+    pantalla.blit(texto,(x,y))
 
 
 def misil(a, b):
@@ -118,7 +124,6 @@ while se_ejecuta:
             y_misil = 500
             misil_visible = False
             score += 1
-            print(f"score : {score}")
             x_enemigo[e] = random.randint(0, 736)
             y_enemigo[e] = random.randint(50, 200)
 
@@ -145,4 +150,6 @@ while se_ejecuta:
 
     #enemigo(x_enemigo, y_enemigo)
     jugador(x, y)
+
+    show_score(10,10)
     pygame.display.update()
